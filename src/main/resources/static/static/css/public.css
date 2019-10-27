@@ -1,0 +1,92 @@
+.layui-cu-tab {
+    padding: 2% 2% 0 2%;
+    background-color: #ffffff;
+    margin: 0;
+}
+
+.layui-cu-tab ul li {
+    margin-right: 2%;
+    width: 120px;
+    background-color: #E7F0FB;
+    color: #222222;
+    border-radius: 2px;
+}
+
+.layui-cu-tab ul .layui-this {
+    background-color: #3A6CAF;
+    color: #FFFFFF;
+}
+
+/*滚条样式*/
+.scroll_bar {
+    overflow: auto !important;
+}
+
+.scroll_bar::-webkit-scrollbar { /*滚动条整体样式*/
+    width: 5px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 5px;
+}
+
+.scroll_bar::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 2px rgba(179, 233, 77, 0.93);
+    background-color: #d4d4d4;
+}
+
+.scroll_bar::-webkit-scrollbar-track { /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 2px rgba(58, 162, 47, 0.89);
+    border-radius: 10px;
+    background-color: #f6f6f6;
+}
+
+/*滚动条样式结束*/
+/*滚动条透明*/
+.scroll_bar_transparent {
+    overflow: auto !important;
+}
+
+.scroll_bar_transparent::-webkit-scrollbar { /*滚动条整体样式*/
+    width: 0; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 0;
+}
+
+/*滚动条透明*/
+.span {
+    margin-left: 3%;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+}
+.boundaryLine {
+    height: 6px;
+    background-color: #f4f4f4;
+    width: 100%;
+}
+#add_div {
+    -moz-box-shadow: 0 0 1px #ccc;
+    -webkit-box-shadow: 0 0 1px #ccc;
+    box-shadow: 0 0 1px #ccc;
+    text-align: center;
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    background-color: white;
+    bottom: 0;
+}
+
+.subBut {
+    margin-top: 10px;
+    background-color: #3A6CAF !important;
+}
+#img {
+     display: inline-block;
+     height: 15px;
+     width: 15px;
+     position: absolute;
+     left: 12px;
+     padding-right: 6px;
+     border-right: 1px solid #ccc;
+     z-index: 999;
+     top: 9.5px;
+ }

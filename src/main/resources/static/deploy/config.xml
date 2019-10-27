@@ -1,0 +1,14 @@
+<service> 
+     <id>certificate</id> 
+     <name>证件管理</name>
+     <description>证件管理@智统科技.</description>
+     <!-- java环境变量 -->
+     <env name="JAVA_HOME" value="%JAVA_HOME%"/>
+     <executable>java</executable> 
+    <arguments>-jar "%BASE%\certificate.jar"</arguments>
+     <!-- 开机启动 -->
+     <startmode>Automatic</startmode>
+     <!-- 日志配置 -->
+     <logpath>%BASE%\console</logpath>
+     <logmode>rotate</logmode>
+ </service>

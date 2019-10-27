@@ -1,0 +1,43 @@
+server:
+  servlet:
+    session:
+      cookie:
+        name: DEPLOY
+  port: 1000
+spring:
+  profiles:
+    active: dev
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  freemarker:
+    cache: false
+    suffix: .ftl
+    template-loader-path: classpath:/templates/
+    charset: UTF-8
+    content-type: text/html
+    enabled: true
+    check-template-location: true
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+    settings:
+      number_format: '#'
+  security:
+    user:
+      name: admin
+      password: 123456
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+      resolve-lazily: false
+logging:
+  level:
+    org.springframework.security: INFO

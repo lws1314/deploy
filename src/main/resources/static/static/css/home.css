@@ -1,0 +1,156 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: white;
+    font-size: 16px;
+    position: relative
+}
+
+.layui-tab-title li {
+    min-width: 25% !important;
+    color: #999;
+    margin: 0 !important;
+    font-size: 16px
+}
+
+.layui-tab-title {
+    box-shadow: 0 3px 5px 0 rgba(106, 106, 106, 0.13)
+}
+
+.layui-this {
+    font-weight: bold;
+    color: #FB5858 !important
+}
+
+.layui-tab-brief > .layui-tab-more li.layui-this:after, .layui-tab-brief > .layui-tab-title .layui-this:after {
+    border-bottom: none !important
+}
+
+.layui-this .border-bottom {
+    display: inline-block;
+    height: calc(100% - 1px);
+    width: auto;
+    border-bottom: 2px solid #FB5858
+}
+
+.layui-tab-content {
+    overflow: auto;
+    height: calc(100% - 60px);
+    background-color: white
+}
+
+.layui-tab-div:first-child {
+    margin: 0 0 7.5px 0
+}
+
+.layui-tab-div {
+    width: 100%;
+    height: auto;
+    box-shadow: 0 0 5px 1px rgba(96, 96, 96, 0.21);
+    -moz-box-shadow: 0 0 5px 1px rgba(96, 96, 96, 0.21);
+    -webkit-box-shadow: 0 0 5px 1px rgba(96, 96, 96, 0.21);
+    border-radius: 4px;
+    margin: 7.5px 0
+}
+
+.yellow {
+    font-weight: bold;
+    color: #e99b11;
+    font-size: 16px
+}
+
+.background-yellow {
+    color: white;
+    background-color: #e99b11
+}
+
+.red {
+    font-weight: bold;
+    color: #f04040;
+    font-size: 16px
+}
+
+.background-red {
+    color: white;
+    background-color: #f04040
+}
+
+.background-gray {
+    color: black;
+    background-color: #D5D5D5
+}
+
+.black {
+    text-align: left;
+    color: #222;
+    line-height: 30px;
+    font-size: 16px
+}
+
+.black p {
+    height: 6px;
+    width: 100%
+}
+
+.layui-card-header {
+    border-bottom: 1px dashed #f6f6f6;
+    padding: 5px 15px
+}
+
+.layui-input-block {
+    text-align: left;
+    min-height: 0;
+    line-height: 27px;
+    margin-left: 0!important;
+}
+
+.layui-form-label {
+    padding: 5px 5px 5px 0!important;
+    width: auto;
+    color: #222;
+    font-size: 16px
+}
+
+.layui-form-item{
+    margin-bottom: 0!important;
+}
+
+.layui-card-body {
+    min-height: 50px !important
+}
+
+.layui-card-bth {
+    text-align: right;
+    border-top: 1px solid #f6f6f6
+}
+
+.layui-btn {
+    height: 36px;
+    line-height: 36px;
+    padding: 0 30px;
+    font-size: 16px;
+    margin: 10px 15px
+}
+
+.layui-card .layui-card-header:first-child::after {
+    content: "";
+    width: 5px;
+    height: 10px;
+    background-color: #e6e6e6;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    border-radius: 0 10px 10px 0
+}
+
+.layui-card .layui-card-header:first-child::before {
+    content: "";
+    width: 5px;
+    height: 10px;
+    background-color: #e6e6e6;
+    position: absolute;
+    bottom: -5px;
+    right: 0;
+    border-radius: 10px 0 0 10px
+}
