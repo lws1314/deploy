@@ -39,4 +39,4 @@ spring boot + webSocket
 ## 项目基础信息
 请求地址： http://localhost:1000/
 登录账户：admin
-登录密码：123456
+登录密码：admin123
