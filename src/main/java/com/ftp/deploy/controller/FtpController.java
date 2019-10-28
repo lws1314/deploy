@@ -78,12 +78,7 @@ public class FtpController {
 
         File file = new File(path);
         if (file.exists()) {
-            HttpSession session = request.getSession();
-            Object watch = session.getAttribute("watch");
-            if (StringUtils.isEmpty(watch)){
-                new ExecuteLog(file).start();
-                session.setAttribute("watch",1);
-            }
+            new ExecuteLog(file).start();
             return ResultInfo.success();
         } else {
             return ResultInfo.error("文件不存在,请重新尝试一下");
