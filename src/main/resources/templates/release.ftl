@@ -184,6 +184,7 @@
                 addParam("开始读取【"+code+"】的启动日志内容.......");
                 postAjaxSimple("/deploy/runLog", {path: code},function (data) {
                     addParam("请稍后正在读取【"+code+"】的启动日志内容.......");
+                    $("#operate").hide();
                 });
                 return false;
             });

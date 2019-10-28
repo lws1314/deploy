@@ -13,6 +13,9 @@ import java.io.IOException;
  */
 @Slf4j
 public class SocketUtil {
+
+    public static boolean stop = false;
+
     /**
      * 发送消息给个人
      * @param message 消息

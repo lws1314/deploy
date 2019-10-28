@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ftp.deploy.config.entity.Digit;
 import com.ftp.deploy.config.entity.ResultInfo;
 import com.ftp.deploy.config.exception.CustomException;
-import com.ftp.deploy.utils.CommonUtils;
-import com.ftp.deploy.utils.ExecuteLog;
-import com.ftp.deploy.utils.JDomXml;
-import com.ftp.deploy.utils.StreamPrint;
+import com.ftp.deploy.utils.*;
 import com.ftp.deploy.utils.socket.SocketUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -20,9 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -79,9 +75,15 @@ public class FtpController {
         if (StringUtils.isEmpty(path)) {
             throw new CustomException(Digit.TWO.getInt(), "缺少参数");
         }
+
         File file = new File(path);
         if (file.exists()) {
-            new ExecuteLog(file).start();
+            HttpSession session = request.getSession();
+            Object watch = session.getAttribute("watch");
+            if (StringUtils.isEmpty(watch)){
+                new ExecuteLog(file).start();
+                session.setAttribute("watch",1);
+            }
             return ResultInfo.success();
         } else {
             return ResultInfo.error("文件不存在,请重新尝试一下");
@@ -121,22 +123,24 @@ public class FtpController {
                 //验证jar是否存在
                 File verify = new File(savePath, serverId + ".jar");
                 boolean exists = verify.exists();
+                boolean bool = true;
                 if (exists) {
-                    socketMsgSend("开始停止服务........");
-                    if (submit(savePath, BAT_STOP)) {
-                        socketMsgSend("服务已停止........");
-                        socketMsgSend("开始休眠1.5秒........");
-                        Thread.sleep(1500);
-                        socketMsgSend("开始更新jar........");
-                    } else {
-                        socketMsgSend("<span style='color:yellowy;'>服务停止失败！</span>");
-                        socketMsgSend("尝试更新jar包");
+                    //备份旧项目程序
+                    bool = backup(savePath, serverId);
+                    if (bool){
+                        socketMsgSend("开始停止服务........");
+                        if (submit(savePath, BAT_STOP)) {
+                            socketMsgSend("服务已停止........");
+                            socketMsgSend("开始休眠1.5秒........");
+                            Thread.sleep(1500);
+                            socketMsgSend("开始更新jar........");
+                        } else {
+                            socketMsgSend("<span style='color:yellowy;'>服务停止失败！</span>");
+                            socketMsgSend("尝试更新jar包");
+                        }
                     }
-                }
-                //保存执行jar
-                boolean jar = CommonUtils.uploadFile(file, savePath, serverId);
-                //不存在创建执行文件
-                if (!exists) {
+                }else{
+                    //不存在创建执行文件
                     //安装服务
                     socketMsgSend("开始创建服务所需文件......");
                     if (createExecuteFile(savePath, serverId, param)) {
@@ -154,25 +158,30 @@ public class FtpController {
                         }
                     }
                 }
-                if (jar) {
-                    socketMsgSend("jar包更新完成");
-                    // 等待程序执行结束并输出状态
-                    socketMsgSend("开始启动服务.......");
-                    if (submit(savePath, BAT_START)) {
-                        socketMsgSend("<span style='color:green;'>服务启动完成</span>");
-                        //运行地址路径
-                        String runLogPath = savePath + File.separator + RUN_LOG;
-                        //运行完成后保存此次数据记录到磁盘以便下一次进行数据回显
-                        if (!exists && "1".equals(status)) {
-                            saveDisk(param, runLogPath);
+                if (bool){
+                    //保存执行jar
+                    boolean jar = CommonUtils.uploadFile(file, savePath, serverId);
+                    if (jar) {
+                        socketMsgSend("jar包更新完成");
+                        // 等待程序执行结束并输出状态
+                        socketMsgSend("开始启动服务.......");
+                        if (submit(savePath, BAT_START)) {
+                            socketMsgSend("<span style='color:green;'>服务启动完成</span>");
+                            //运行地址路径
+                            String runLogPath = savePath + File.separator + RUN_LOG;
+                            //运行完成后保存此次数据记录到磁盘以便下一次进行数据回显
+                            if (!exists && "1".equals(status)) {
+                                saveDisk(param, runLogPath);
+                            }
+                            return result(Digit.ONE.getInt(), "执行成功", runLogPath);
+                        } else {
+                            return result(Digit.TWO.getInt(), "执行失败", null);
                         }
-                        return result(Digit.ONE.getInt(), "执行成功", runLogPath);
                     } else {
-                        return result(Digit.TWO.getInt(), "执行失败", null);
+                        socketMsgSend("jar包更新失败");
                     }
-                } else {
-                    socketMsgSend("jar包更新失败");
                 }
+
             } else {
                 return ResultInfo.error("缺少参数");
             }
@@ -252,6 +261,27 @@ public class FtpController {
 
     private void socketMsgSend(String message) {
         SocketUtil.sendMessage(message);
+    }
+
+    private boolean backup(String savePath,String fileName){
+        socketMsgSend("开始备份旧程序...");
+        try {
+            String file = fileName + ".jar";
+            InputStream is = new FileInputStream(new File(savePath, file));
+            String yyyyMMddHHmmss = LocalDateTimeUtils.formatNow("yyyyMMddHHmmss");
+            String path = savePath + File.separator + "back"+ File.separator +yyyyMMddHHmmss;
+            socketMsgSend("旧程序备份路径》"+path);
+            boolean b = CommonUtils.uploadFile(is, path, file);
+            if (b){
+                socketMsgSend("<span style='color:green;'>旧程序备份完成</span>");
+                return true;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        socketMsgSend("<span style='color:red;'>旧程序备份失败</span>");
+        socketMsgSend("<span style='color:red;'>此次更新程序结束</span>");
+        return false;
     }
 
 }

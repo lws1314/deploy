@@ -39,6 +39,7 @@ public class Socket {
     @OnClose
     public void onClose(@PathParam("username") String username,Session session) throws IOException {
         RecordSingleCase.getInstance().remove(username);
+        SocketUtil.stop = true;
         log.info("{}关闭连接",username);
     }
 

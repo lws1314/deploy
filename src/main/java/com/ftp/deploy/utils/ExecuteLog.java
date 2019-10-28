@@ -36,17 +36,25 @@ public class ExecuteLog extends Thread {
                             return;
                         }
                         continue;
+                    }else{
+                        if (SocketUtil.stop){
+                            SocketUtil.stop = false;
+                            reader.close();
+                            return;
+                        }
                     }
                     Thread.sleep(1000L);
                 } catch (IOException | InterruptedException e) {
                     // 文件被清空的时候FileInputStream会被close
                     reader.close();
                     reader = null;
+                    SocketUtil.stop = false;
                     return;
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
+            SocketUtil.stop = false;
         }
     }
 }
