@@ -58,6 +58,7 @@ public class Socket {
     @OnError
     public void onError(@PathParam("username") String username,Session session, Throwable error) {
         RecordSingleCase.getInstance().remove(username);
+        SocketUtil.stop = true;
         log.error(username + "---->{'status':'2','content':'链接异常中断'}",error);
     }
 
